@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Santosh - The Cybernetic Architect</title>
+    <style>
+        :root {
+            --primary-color: #00c3ff;
+            --secondary-color: #4d5eff;
+            --background-color: #020412;
+            --text-color: #e0e0e0;
+            --card-bg-color: rgba(10, 16, 40, 0.75);
+            --header-bg-color: rgba(2, 4, 18, 0.6);
+            --glow-color: rgba(0, 195, 255, 0.6);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        #particles-js { position: fixed; width: 100%; height: 100%; top: 0; left: 0; z-index: -1; }
+        
+        #preloader { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--background-color); z-index: 10000; display: flex; justify-content: center; align-items: center; transition: opacity 0.8s ease, visibility 0.8s ease; }
+        .loader { width: 50px; height: 50px; border: 4px solid var(--primary-color); border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite; }
+        #preloader.hidden { opacity: 0; visibility: hidden; }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 2rem; position: relative; z-index: 2; }
+        
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0a0a1a; }
+        ::-webkit-scrollbar-thumb { background: var(--primary-color); border-radius: 10px; }
+
+        header { position: fixed; width: 100%; top: 0; z-index: 1000; background-color: var(--header-bg-color); backdrop-filter: blur(15px); border-bottom: 1px solid rgba(0, 195, 255, 0.2); padding: 1rem 0; }
+        nav { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.8rem; font-weight: 700; color: #fff; text-decoration: none; font-family: 'monospace'; z-index: 1001; }
+        .logo span { color: var(--primary-color); }
+        
+        .nav-links { list-style: none; display: flex; }
+        .nav-links li { margin-left: 2.5rem; }
+        .nav-links a { color: var(--text-color); text-decoration: none; font-weight: 500; transition: color 0.3s ease, text-shadow 0.3s ease; position: relative; }
+        .nav-links a::after { content: ''; position: absolute; width: 0; height: 2px; bottom: -5px; left: 50%; transform: translateX(-50%); background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); transition: width 0.3s ease; }
+        .nav-links a:hover, .nav-links a.active { color: var(--primary-color); text-shadow: 0 0 10px var(--glow-color); }
+        .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+        .hamburger { display: none; cursor: pointer; z-index: 1001; }
+        .hamburger div { width: 25px; height: 3px; background-color: var(--text-color); margin: 5px; transition: all 0.3s ease; }
+        
+        #hero { height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; flex-direction: column; }
+        .hero-photo-container {
+            position: relative;
+            width: 220px;
+            height: 220px;
+            margin-bottom: 2.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 2s 0.5s forwards;
+            opacity: 0;
+        }
+        .hero-photo-container::before, .hero-photo-container::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+        }
+        .hero-photo-container::before {
+            width: 100%;
+            height: 100%;
+            border: 2px solid var(--primary-color);
+            animation: spin 8s linear infinite;
+        }
+        .hero-photo-container::after {
+            width: 110%;
+            height: 110%;
+            border: 2px dashed var(--secondary-color);
+            opacity: 0.5;
+            animation: spin-reverse 12s linear infinite;
+        }
+        .hero-photo-container img {
+            width: 90%;
+            height: 90%;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 4px solid var(--background-color);
+            box-shadow: 0 0 30px var(--glow-color);
+        }
+        .hero-content { animation: fadeIn 2s 1s forwards; opacity: 0; }
+        .hero-content h1 { font-family: 'monospace'; font-size: 3.5rem; margin-bottom: 0.5rem; color: #fff; }
+        .hero-content p { font-size: 1.2rem; margin-bottom: 2rem; }
+        .typewriter { font-weight: bold; color: var(--secondary-color); }
+
+        .cta-button { position: relative; display: inline-block; background: transparent; border: 2px solid var(--primary-color); color: var(--primary-color); padding: 14px 28px; border-radius: 8px; text-decoration: none; font-weight: bold; transition: all 0.3s ease; overflow: hidden; }
+        .cta-button:hover { background: var(--primary-color); color: #020412; box-shadow: 0 0 25px var(--glow-color); transform: translateY(-5px) scale(1.05); }
+        .cta-button .ripple { position: absolute; border-radius: 50%; background: rgba(255, 255, 255, 0.3); transform: scale(0); animation: ripple-anim 0.6s linear; }
+
+        section { padding: 6rem 0; overflow: hidden; }
+        .title-container { overflow: hidden; }
+        .section-title { text-align: center; font-size: 2.8rem; margin-bottom: 4rem; color: #fff; transform: translateY(100%); }
+        .visible .section-title { animation: revealUp 0.8s forwards; }
+
+        .glass-card { position: relative; background: var(--card-bg-color); backdrop-filter: blur(12px); border-radius: 15px; padding: 2rem; overflow: hidden; }
+        .glass-card::before { content: ''; position: absolute; top: 50%; left: 50%; width: 200%; height: 200%; background: conic-gradient(from 0deg, transparent, var(--primary-color), var(--secondary-color), var(--primary-color), transparent); animation: rotate-border 4s linear infinite; }
+        .glass-card::after { content: ''; position: absolute; inset: 2px; background: var(--background-color); border-radius: 14px; }
+        .card-content { position: relative; z-index: 2; }
+        
+        .about-container { max-width: 800px; margin: 0 auto; }
+        
+        #experience .container, #skills .container { max-width: 800px; }
+        .timeline-container { position: relative; padding: 2rem 0; }
+        .timeline-container::before { content: ''; position: absolute; top: 0; left: 15px; height: 100%; width: 4px; background: linear-gradient(var(--primary-color), var(--secondary-color)); border-radius: 2px; }
+        .timeline-item { position: relative; margin-bottom: 50px; padding-left: 50px; }
+        .timeline-dot { position: absolute; left: 0; top: 5px; width: 30px; height: 30px; background: var(--background-color); border: 4px solid var(--primary-color); border-radius: 50%; z-index: 1; display: flex; justify-content: center; align-items: center; }
+        .timeline-dot i { color: var(--primary-color); font-size: 14px;}
+        .timeline-date { color: var(--primary-color); font-weight: bold; margin-bottom: 0.5rem; }
+        .timeline-content h3 { margin-bottom: 0.5rem; color: #fff; }
+        .timeline-content h4 { font-weight: normal; color: #aaa; margin-bottom: 1rem; }
+        
+        .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 1.5rem; text-align: center; }
+        .skill-item i { font-size: 3rem; margin-bottom: 0.5rem; color: var(--primary-color); transition: transform 0.3s; }
+        .skill-item:hover i { transform: scale(1.2); text-shadow: 0 0 15px var(--glow-color); }
+        .skill-item p { font-size: 0.9rem; }
+        
+        .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; }
+        .project-image { width: 100%; height: 200px; object-fit: cover; border-radius: 10px 10px 0 0; }
+        .project-content { padding: 1.5rem; }
+        .project-tech span { background-color: rgba(0, 195, 255, 0.1); color: var(--primary-color); padding: 5px 10px; border-radius: 5px; font-size: 0.8rem; margin: 5px 5px 5px 0; display: inline-block; }
+
+        #contact p { margin-bottom: 2rem; font-size: 1.1rem; text-align: center; }
+        .social-links { text-align: center; }
+        .social-links a { color: var(--text-color); font-size: 2.2rem; margin: 0 1.2rem; transition: all 0.3s ease; }
+        .social-links a:hover { color: var(--primary-color); transform: translateY(-5px) scale(1.1); text-shadow: 0 0 15px var(--glow-color); }
+
+        footer { text-align: center; padding: 2rem 0; border-top: 1px solid rgba(0, 195, 255, 0.2); }
+        
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        @keyframes spin-reverse { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
+        @keyframes fadeIn { to { opacity: 1; } }
+        @keyframes revealUp { to { transform: translateY(0); } }
+        @keyframes rotate-border { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
+        @keyframes ripple-anim { to { transform: scale(4); opacity: 0; } }
+
+        .hidden { opacity: 0; transform: translateY(50px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+        .visible { opacity: 1; transform: translateY(0); }
+        
+        @media (max-width: 768px) {
+            .container { padding: 0 1.5rem; }
+            .hamburger { display: block; }
+            .nav-links { position: fixed; right: -100%; top: 0; height: 100vh; width: 60%; background-color: var(--header-bg-color); backdrop-filter: blur(20px); flex-direction: column; align-items: center; justify-content: center; transition: right 0.5s ease-in-out; }
+            .nav-links.nav-active { right: 0; }
+            .nav-links li { margin: 2rem 0; }
+            .toggle .line1 { transform: rotate(-45deg) translate(-5px, 6px); }
+            .toggle .line2 { opacity: 0; }
+            .toggle .line3 { transform: rotate(45deg) translate(-5px, -6px); }
+            
+            #hero { padding: 6rem 0 4rem 0; }
+            .hero-photo-container { width: 180px; height: 180px; margin-bottom: 2rem; }
+            .hero-content h1 { font-size: 2.8rem; }
+            .hero-content p { font-size: 1.1rem; }
+            
+            section { padding: 4rem 0; }
+            .section-title { font-size: 2.2rem; margin-bottom: 3rem;}
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&family=monospace&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="particles-js"></div>
+    <div id="preloader"><div class="loader"></div></div>
+
+    <header>
+        <nav class="container">
+            <a href="#hero" class="logo">S<span>.</span></a>
+            <ul class="nav-links">
+                <li><a href="#hero" class="active">Home</a></li>
+                <li><a href="#about">Story</a></li>
+                <li><a href="#experience">Journey</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="hamburger">
+                <div class="line1"></div> <div class="line2"></div> <div class="line3"></div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section id="hero">
+            <div class="hero-photo-container">
+                <!-- ==== YAHAN APNE DOST KI PHOTO KA LINK DAALEIN ==== -->
+                <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhE95wF1lALkiX1F30RXN6_MmSEYG6T2u_8Gb_lxJqYhwXF5UQftmbkbDBMKVD7h8-FmmSvPucZiIgQ_xydOyuxNF4wGLvKMMk3x1sc2rkj384dHhEckwbsZNU-7uchjiCBDJfqSRpxbvkisjXBtN6LL7GMOKlGOftpHWEgd9R1LOza3qw8vpQNxTMC87s/s320/IMG_20250817_184243.jpg" alt="Santosh Profile Photo">
+            </div>
+            <div class="hero-content">
+                <h1>SANTOSH</h1>
+                <p>Code is my language. Passion is my degree. I'm an elite <span class="typewriter"></span></p>
+                <a href="#projects" class="cta-button">Explore My Arsenal</a>
+            </div>
+        </section>
+
+        <section id="about" class="hidden">
+            <div class="container">
+                <div class="title-container"><h2 class="section-title">My Story</h2></div>
+                <div class="about-container glass-card" data-tilt>
+                    <div class="card-content">
+                        <h3>Passion Over Paper</h3>
+                        <p>My journey into technology wasn't conventional. After exploring a traditional academic path, I made a bold decision: to drop out and pursue my true passion for building things. I chose real-world skills over a degree, dedicating myself to mastering the craft of software development. This path has made me a resilient, self-motivated, and highly proficient developer who engineers solutions, not just writes code.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="experience" class="hidden">
+            <div class="container">
+                <div class="title-container"><h2 class="section-title">My Journey</h2></div>
+                <div class="timeline-container">
+                    <div class="timeline-item">
+                        <div class="timeline-dot"><i class="fas fa-rocket"></i></div>
+                        <div class="timeline-date">2024 - Present</div>
+                        <div class="timeline-content glass-card" data-tilt>
+                            <div class="card-content">
+                                <h3>Elite Freelance Developer</h3><h4>Global Clients</h4>
+                                <p>Architecting and delivering powerful, end-to-end web solutions for a diverse range of clients. Specializing in creating scalable, high-performance applications that drive results.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-dot"><i class="fas fa-code"></i></div>
+                        <div class="timeline-date">2023 - 2024</div>
+                        <div class="timeline-content glass-card" data-tilt>
+                            <div class="card-content">
+                                <h3>The Self-Taught Journey</h3><h4>Intensive Development Period</h4>
+                                <p>Dived deep into the world of full-stack development, mastering JavaScript, React, Node.js, and system architecture through relentless hands-on projects and study.</p>
+                            </div>
+                        </div>
+                    </div>
+                     <div class="timeline-item">
+                        <div class="timeline-dot"><i class="fas fa-compass"></i></div>
+                        <div class="timeline-date">2021 - 2023</div>
+                        <div class="timeline-content glass-card" data-tilt>
+                            <div class="card-content">
+                                <h3>Foundational Exploration</h3><h4>B.Com Dropout</h4>
+                                <p>Explored a conventional path which solidified my decision to follow my true passion in technology. This period taught me the importance of pursuing what you love.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills" class="hidden">
+            <div class="container">
+                <div class="title-container"><h2 class="section-title">Technical Arsenal</h2></div>
+                <div class="glass-card" data-tilt>
+                    <div class="card-content">
+                        <div class="skills-grid">
+                            <div class="skill-item"><i class="fab fa-react"></i><p>React</p></div>
+                            <div class="skill-item"><i class="fab fa-node-js"></i><p>Node.js</p></div>
+                            <div class="skill-item"><i class="fab fa-js-square"></i><p>JavaScript</p></div>
+                            <div class="skill-item"><i class="fas fa-database"></i><p>Databases</p></div>
+                            <div class="skill-item"><i class="fas fa-cloud"></i><p>Cloud/DevOps</p></div>
+                            <div class="skill-item"><i class="fas fa-mobile-alt"></i><p>Flutter</p></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="projects" class="hidden">
+            <div class="container">
+                <div class="title-container"><h2 class="section-title">Featured Projects</h2></div>
+                 <div class="projects-grid">
+                    <div class="glass-card" data-tilt>
+                        <div class="card-content">
+                            <img src="https://i.imgur.com/OANm8S7.png" alt="World Wide FM Radio" class="project-image">
+                            <div class="project-content">
+                                <h3>World Wide FM Radio</h3><p>Listen to global FM radio stations live.</p>
+                                <div class="project-tech"><span>JavaScript</span><span>API</span></div>
+                                <a href="https://tunexus.online" target="_blank" class="cta-button">Live Demo</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="glass-card" data-tilt>
+                        <div class="card-content">
+                            <img src="https://i.imgur.com/gK23jZQ.png" alt="Recipe Finder" class="project-image">
+                            <div class="project-content">
+                                <h3>Recipe Finder</h3><p>Discover a wide variety of recipes with ease.</p>
+                                <div class="project-tech"><span>React</span><span>API</span></div>
+                                <a href="https://recipe-finder-o3ek.vercel.app" target="_blank" class="cta-button">Live Demo</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="glass-card" data-tilt>
+                        <div class="card-content">
+                            <img src="https://i.imgur.com/5b1g1gH.png" alt="Background Remover" class="project-image">
+                            <div class="project-content">
+                                <h3>Background Remover</h3><p>A tool to automatically remove image backgrounds.</p>
+                                <div class="project-tech"><span>JavaScript</span></div>
+                                <a href="https://testingbgremove.blogspot.com" target="_blank" class="cta-button">Live Demo</a>
+                            </div>
+                        </div>
+                    </div>
+                 </div>
+            </div>
+        </section>
+
+        <section id="contact" class="hidden">
+            <div class="container">
+                <div class="title-container"><h2 class="section-title">Get In Touch</h2></div>
+                <p>Have a project, an idea, or just want to connect? Let's build the future.</p>
+                <div style="text-align:center;">
+                    <a href="mailto:santosh@example.com" class="cta-button magnetic-btn" style="margin-bottom:2rem;">Say Hello</a>
+                </div>
+                <div class="social-links">
+                    <a href="#" target="_blank"><i class="fab fa-github"></i></a>
+                    <a href="#" target="_blank"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p class="container">&copy; 2025 Santosh. Forged with Code & Passion.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@2.12.0/tsparticles.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.7.2/vanilla-tilt.min.js"></script>
+    <script>
+        window.addEventListener('load', () => { document.getElementById('preloader').classList.add('hidden'); });
+
+        tsParticles.load("particles-js", {
+            particles: { number: { value: 80, density: { enable: true, value_area: 800 } }, color: { value: "#ffffff" }, shape: { type: "circle" }, opacity: { value: 0.5, random: true }, size: { value: 2, random: true }, line_linked: { enable: true, distance: 150, color: "#ffffff", opacity: 0.2, width: 1 }, move: { enable: true, speed: 1, direction: "none", random: false, straight: false, out_mode: "out", bounce: false }, },
+            interactivity: { detect_on: "canvas", events: { onhover: { enable: true, mode: "repulse" }, resize: true }, modes: { repulse: { distance: 100, duration: 0.4 } }, },
+            retina_detect: true,
+        });
+        
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        const links = document.querySelectorAll('.nav-links li');
+        hamburger.addEventListener('click', () => { navLinks.classList.toggle('nav-active'); hamburger.classList.toggle('toggle'); });
+        links.forEach(link => { link.addEventListener('click', () => { navLinks.classList.remove('nav-active'); hamburger.classList.remove('toggle'); });});
+
+        const typewriterEl = document.querySelector('.typewriter');
+        const words = ["Full Stack Architect", "Problem Solver", "Tech Innovator"];
+        let wordIndex = 0, charIndex = 0, isDeleting = false;
+        function type() {
+            const currentWord = words[wordIndex];
+            typewriterEl.textContent = currentWord.substring(0, charIndex);
+            if (!isDeleting && charIndex < currentWord.length) { charIndex++; setTimeout(type, 100); }
+            else if (isDeleting && charIndex > 0) { charIndex--; setTimeout(type, 50); }
+            else { isDeleting = !isDeleting; if (!isDeleting) { wordIndex = (wordIndex + 1) % words.length; } setTimeout(type, 1200); }
+        }
+        setTimeout(type, 2000); 
+        
+        document.querySelectorAll('.cta-button').forEach(button => {
+            button.addEventListener('click', function (e) {
+                const rect = e.target.getBoundingClientRect();
+                const x = e.clientX - rect.left; const y = e.clientY - rect.top;
+                let ripple = document.createElement('span');
+                ripple.classList.add('ripple');
+                ripple.style.left = x + 'px'; ripple.style.top = y + 'px';
+                this.appendChild(ripple);
+                setTimeout(() => { ripple.remove() }, 600);
+            });
+        });
+        
+        const isTouchDevice = () => 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+        if (!isTouchDevice()) {
+            VanillaTilt.init(document.querySelectorAll("[data-tilt]"), { max: 10, speed: 400, glare: true, "max-glare": 0.4 });
+            document.querySelectorAll('.magnetic-btn').forEach(btn => {
+                btn.addEventListener('mousemove', (e) => {
+                    const rect = btn.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px) scale(1.05)`;
+                });
+                btn.addEventListener('mouseleave', () => { btn.style.transform = 'translate(0, 0) scale(1)'; });
+            });
+        }
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+        }, { threshold: 0.2 });
+        document.querySelectorAll('.hidden').forEach((el) => observer.observe(el));
+
+        const sections = document.querySelectorAll('main section');
+        const navLinksList = document.querySelectorAll('.nav-links a');
+        window.addEventListener('scroll', () => {
+            let current = 'hero';
+            sections.forEach(section => { if (pageYOffset >= section.offsetTop - 150) { current = section.id; } });
+            navLinksList.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current)) link.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
