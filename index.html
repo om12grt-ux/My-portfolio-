@@ -53,43 +53,11 @@
         .hamburger div { width: 25px; height: 3px; background-color: var(--text-color); margin: 5px; transition: all 0.3s ease; }
         
         #hero { height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; flex-direction: column; }
-        .hero-photo-container {
-            position: relative;
-            width: 220px;
-            height: 220px;
-            margin-bottom: 2.5rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            animation: fadeIn 2s 0.5s forwards;
-            opacity: 0;
-        }
-        .hero-photo-container::before, .hero-photo-container::after {
-            content: '';
-            position: absolute;
-            border-radius: 50%;
-        }
-        .hero-photo-container::before {
-            width: 100%;
-            height: 100%;
-            border: 2px solid var(--primary-color);
-            animation: spin 8s linear infinite;
-        }
-        .hero-photo-container::after {
-            width: 110%;
-            height: 110%;
-            border: 2px dashed var(--secondary-color);
-            opacity: 0.5;
-            animation: spin-reverse 12s linear infinite;
-        }
-        .hero-photo-container img {
-            width: 90%;
-            height: 90%;
-            object-fit: cover;
-            border-radius: 50%;
-            border: 4px solid var(--background-color);
-            box-shadow: 0 0 30px var(--glow-color);
-        }
+        .hero-photo-container { position: relative; width: 220px; height: 220px; margin-bottom: 2.5rem; display: flex; justify-content: center; align-items: center; animation: fadeIn 2s 0.5s forwards; opacity: 0; }
+        .hero-photo-container::before, .hero-photo-container::after { content: ''; position: absolute; border-radius: 50%; }
+        .hero-photo-container::before { width: 100%; height: 100%; border: 2px solid var(--primary-color); animation: spin 8s linear infinite; }
+        .hero-photo-container::after { width: 110%; height: 110%; border: 2px dashed var(--secondary-color); opacity: 0.5; animation: spin-reverse 12s linear infinite; }
+        .hero-photo-container img { width: 90%; height: 90%; object-fit: cover; border-radius: 50%; border: 4px solid var(--background-color); box-shadow: 0 0 30px var(--glow-color); }
         .hero-content { animation: fadeIn 2s 1s forwards; opacity: 0; }
         .hero-content h1 { font-family: 'monospace'; font-size: 3.5rem; margin-bottom: 0.5rem; color: #fff; }
         .hero-content p { font-size: 1.2rem; margin-bottom: 2rem; }
@@ -126,8 +94,22 @@
         .skill-item:hover i { transform: scale(1.2); text-shadow: 0 0 15px var(--glow-color); }
         .skill-item p { font-size: 0.9rem; }
         
+        /* --- NEW, CORRECTED PROJECT CARD STYLE --- */
         .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; }
-        .project-image { width: 100%; height: 200px; object-fit: cover; border-radius: 10px 10px 0 0; }
+        .project-card {
+            background: var(--card-bg-color);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 195, 255, 0.2);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 20px var(--glow-color);
+            border-color: rgba(0, 195, 255, 0.5);
+        }
+        .project-image { width: 100%; height: 200px; object-fit: cover; }
         .project-content { padding: 1.5rem; }
         .project-tech span { background-color: rgba(0, 195, 255, 0.1); color: var(--primary-color); padding: 5px 10px; border-radius: 5px; font-size: 0.8rem; margin: 5px 5px 5px 0; display: inline-block; }
 
@@ -194,7 +176,6 @@
     <main>
         <section id="hero">
             <div class="hero-photo-container">
-                <!-- ==== YAHAN APNE DOST KI PHOTO KA LINK DAALEIN ==== -->
                 <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhE95wF1lALkiX1F30RXN6_MmSEYG6T2u_8Gb_lxJqYhwXF5UQftmbkbDBMKVD7h8-FmmSvPucZiIgQ_xydOyuxNF4wGLvKMMk3x1sc2rkj384dHhEckwbsZNU-7uchjiCBDJfqSRpxbvkisjXBtN6LL7GMOKlGOftpHWEgd9R1LOza3qw8vpQNxTMC87s/s320/IMG_20250817_184243.jpg" alt="Santosh Profile Photo">
             </div>
             <div class="hero-content">
@@ -276,45 +257,54 @@
             <div class="container">
                 <div class="title-container"><h2 class="section-title">Featured Projects</h2></div>
                  <div class="projects-grid">
-                    <div class="glass-card" data-tilt>
-                        <div class="card-content">
-                            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEii7cPiXts2AMtFZ2SCgQDfFwBccgSvxfCJaPL8EfAV-N4XwYA8UsQjniR9BXQcF6JhWfWEvsLxtvRXKWxo7J0bXxUiA5foMcpZJAYhFde7YefjBQREfTM5fWoBUekzs80jtqbI1QmolapVwNFKLuqUTnTvHwD260ueDe0teXmELA0uSAPzfp_5m3cqamQ/s640/7d3097d5-1b78-4b2d-b0d5-d8f5324b4a01.jpeg" alt="World Wide FM Radio" class="project-image">
-                            <div class="project-content">
-                                <h3>World Wide FM Radio</h3><p>Listen to global FM radio stations live.</p>
-                                <div class="project-tech"><span>JavaScript</span><span>API</span></div>
-                                <a href="https://tunexus.online" target="_blank" class="cta-button">Live Demo</a>
-                            </div>
+                    <div class="project-card" data-tilt>
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEii7cPiXts2AMtFZ2SCgQDfFwBccgSvxfCJaPL8EfAV-N4XwYA8UsQjniR9BXQcF6JhWfWEvsLxtvRXKWxo7J0bXxUiA5foMcpZJAYhFde7YefjBQREfTM5fWoBUekzs80jtqbI1QmolapVwNFKLuqUTnTvHwD260ueDe0teXmELA0uSAPzfp_5m3cqamQ/s640/7d3097d5-1b78-4b2d-b0d5-d8f5324b4a01.jpeg" alt="World Wide FM Radio" class="project-image">
+                        <div class="project-content">
+                            <h3>World Wide FM Radio</h3><p>Tune in to global radio stations, live.</p>
+                            <div class="project-tech"><span>JavaScript</span><span>API</span></div>
+                            <a href="https://tunexus.online" target="_blank" class="cta-button">Live Demo</a>
                         </div>
                     </div>
-                    <div class="glass-card" data-tilt>
-                        <div class="card-content">
-                            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgjNk7pwEycrrXhnvrRANmiUhTskx4uOssYpgHrQgk-pJAatNCYISmtZmSerjNYw2d82eUjqu69kn1s2B9UHXFHnzCpuViIIIbxnkAPwEjfkdBUhuqGdv12t60dUdwSXH5ieAW8VIr6QOR0XVyiFVH-05efffQ9loKGyJzDDwGHzZYPl8PdsBfEes_Gbv0/s512/images%20(8).png/.png" alt="Recipe Finder" class="project-image">
-                            <div class="project-content">
-                                <h3>Recipe Finder</h3><p>Discover a wide variety of recipes with ease.</p>
-                                <div class="project-tech"><span>React</span><span>API</span></div>
-                                <a href="https://recipe-finder-o3ek.vercel.app" target="_blank" class="cta-button">Live Demo</a>
-                            </div>
+                    <div class="project-card" data-tilt>
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgjNk7pwEycrrXhnvrRANmiUhTskx4uOssYpgHrQgk-pJAatNCYISmtZmSerjNYw2d82eUjqu69kn1s2B9UHXFHnzCpuViIIIbxnkAPwEjfkdBUhuqGdv12t60dUdwSXH5ieAW8VIr6QOR0XVyiFVH-05efffQ9loKGyJzDDwGHzZYPl8PdsBfEes_Gbv0/s512/images%20(8).png" alt="Recipe Finder" class="project-image">
+                        <div class="project-content">
+                            <h3>Recipe Finder</h3><p>Discover thousands of recipes with a powerful search.</p>
+                            <div class="project-tech"><span>React</span><span>API</span></div>
+                            <a href="https://recipe-finder-o3ek.vercel.app" target="_blank" class="cta-button">Live Demo</a>
                         </div>
                     </div>
-                    <div class="glass-card" data-tilt>
-                        <div class="card-content">
-                            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiBpobyAT79lY8-9_cmh2g1zohRD4dcPM3fAhH_2-EkI1za1Wu6HUJYCoIF_S5wDlXT_FjH4Iqc_sTO1SfFxSsuMtRNWuLfbm-DFMh2R-F_1V9CSJC9bbtQCntn32M6QDC3AkuLxjWFUHeO7BjR19cE0w_MQ5s9xwc5RmhoCrWpL8nc8mX0S5ikSw9Cf6g/s738/images%20(38).jpeg" alt="Background Remover" class="project-image">
-                            <div class="project-content">
-                                <h3>Background Remover</h3><p>A tool to automatically remove image backgrounds.</p>
-                                <div class="project-tech"><span>JavaScript</span></div>
-                                <a href="https://testingbgremove.blogspot.com" target="_blank" class="cta-button">Live Demo</a>
-                            </div>
+                     <div class="project-card" data-tilt>
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiBpobyAT79lY8-9_cmh2g1zohRD4dcPM3fAhH_2-EkI1za1Wu6HUJYCoIF_S5wDlXT_FjH4Iqc_sTO1SfFxSsuMtRNWuLfbm-DFMh2R-F_1V9CSJC9bbtQCntn32M6QDC3AkuLxjWFUHeO7BjR19cE0w_MQ5s9xwc5RmhoCrWpL8nc8mX0S5ikSw9Cf6g/s738/images%20(38).jpeg" alt="Background Remover" class="project-image">
+                        <div class="project-content">
+                            <h3>Background Remover</h3><p>AI-powered tool to automatically remove backgrounds.</p>
+                            <div class="project-tech"><span>JavaScript</span><span>API</span></div>
+                            <a href="https://testingbgremove.blogspot.com" target="_blank" class="cta-button">Live Demo</a>
                         </div>
                     </div>
-
-                     <div class="glass-card" data-tilt>
-                        <div class="card-content">
-                            <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgjNk7pwEycrrXhnvrRANmiUhTskx4uOssYpgHrQgk-pJAatNCYISmtZmSerjNYw2d82eUjqu69kn1s2B9UHXFHnzCpuViIIIbxnkAPwEjfkdBUhuqGdv12t60dUdwSXH5ieAW8VIr6QOR0XVyiFVH-05efffQ9loKGyJzDDwGHzZYPl8PdsBfEes_Gbv0/s512/images%20(8).png/.png" alt="Recipe Finder" class="project-image">
-                            <div class="project-content">
-                                <h3>Recipe Finder</h3><p>Discover a wide variety of recipes with ease.</p>
-                                <div class="project-tech"><span>React</span><span>API</span></div>
-                                <a href="https://recipe-finder-o3ek.vercel.app" target="_blank" class="cta-button">Live Demo</a>
-                            </div>
+                     <div class="project-card" data-tilt>
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgpuK29YMRgaqoNsqdiF5QQ8uKHHBKBqmhyEqYXc-V38IQstUsxGa848jo1f3YQMcN2cdYBIc70imYV5TlpPEs_IadN0l20L5LIq3FiArqDrSZ6_a0ORouFM-0gL8cpoGyBfSjolOfwQv2eR8T9kxrpaaH1jOt3mxWqJJmBmS4fJwQDUhyh8_jcSmkY0nQ/s480/hqdefault%20(2).jpg" alt="Image Resizer" class="project-image">
+                        <div class="project-content">
+                            <h3>Image Resizer</h3><p>A fast tool to resize images to any dimension.</p>
+                            <div class="project-tech"><span>JavaScript</span><span>HTML</span></div>
+                            <a href="https://sjsjdjdjnn.blogspot.com" target="_blank" class="cta-button">Live Demo</a>
+                        </div>
+                    </div>
+                     <div class="project-card" data-tilt>
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjW7NwAyWomtQHWRx7UPrmzr_aHwu7QIkTlGShNzohAya2msRP99K39NwLi5_DD5aM80IBF0GXcS8VnNM3YhMiP-2fmWt_Sl55IKL4R5SQiyS59TtcRzdI6GIkfxqlsbGilhBD4FdOMkEhnxQhiWRg7Ji2ANl9hWPKGXBMqcNUNC7OnufouOFwUpFwhwb8/s512/10199746.png" alt="Tic Tac Toe Game" class="project-image">
+                        <div class="project-content">
+                            <h3>Tic Tac Toe Game</h3><p>The classic logic game, built for the web.</p>
+                            <div class="project-tech"><span>HTML</span><span>CSS</span><span>JavaScript</span></div>
+                            <a href="https://tictoctoe111.blogspot.com" target="_blank" class="cta-button">Live Demo</a>
+                        </div>
+                    </div>
+                    <div class="project-card" data-tilt>
+                        <img src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgdBwola8QczUpIjLrcm8SW4ephWagleZuJrtY9LOBj1i5JMI-kD0u5qPjKAZ8IKJtm3RzUrshRP6HtQRQsAWfxJC4c09oJd6_pmf0-g5svZm5UQ_k-BgbgbzhjB1e5YreWhkau4D4BusHNUk69eEQIGSJczpe1FdDnSdrwtqeu81whoqHoRRQ8y0n2sDA/s512/images%20(6).png" alt="Money Management" class="project-image">
+                        <div class="project-content">
+                            <h3>Money Management</h3><p>A sleek concept for personal finance tracking.</p>
+                            <div class="project-tech"><span>UI/UX Concept</span></div>
+                            <a href="https://moneymanegement123.blogspot.com" target="_blank" class="cta-button">View Concept</a>
+                        </div>
+                    </div>
                  </div>
             </div>
         </section>
